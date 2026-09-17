@@ -275,6 +275,19 @@
   }
   .with-row span{font-family:'Gowun Batang', serif;}
   .with-row img{height:22px; width:auto; display:block;}
+
+  /* ---- tighter bubbles on narrow/tall screens (phones AND vertical 9:16 displays) ---- */
+  @media (max-aspect-ratio: 3/4){
+    .wrap{padding:0 14px;}
+    .board{gap:8px;}
+    .note{max-width:90%; gap:7px;}
+    .tag{width:28px; height:28px;}
+    .who{font-size:11.5px; margin-bottom:2px;}
+    .bubble{padding:8px 12px; border-radius:15px;}
+    .bubble p{font-size:14.5px; line-height:1.55;}
+    .note-foot{font-size:10px; margin-top:2px; gap:6px;}
+    .note-actions{gap:7px;}
+  }
 </style>
 </head>
 <body>
