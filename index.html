@@ -346,7 +346,8 @@ const HASH_KEY = "about_blank_posts";
    행사 전에 아래 값을 직접 아는 비밀번호로 꼭 바꿔주세요. */
 const ADMIN_PASSWORD = "biff-admin-2026";
 
-async function kvCommand(command, retrying){
+async function kvCommand(command, attempt){
+  attempt = attempt || 0;
   const res = await fetch(KV_URL, {
     method: 'POST',
     headers: {
@@ -355,10 +356,10 @@ async function kvCommand(command, retrying){
     },
     body: JSON.stringify(command)
   });
-  if(res.status === 429 && !retrying){
-    // momentary rate limit — wait a beat and retry once instead of failing outright
-    await new Promise(r => setTimeout(r, 400 + Math.random()*400));
-    return kvCommand(command, true);
+  if(res.status === 429 && attempt < 2){
+    // momentary rate limit — back off a bit more each time and retry (up to 2 retries)
+    await new Promise(r => setTimeout(r, (attempt+1) * 400 + Math.random()*400));
+    return kvCommand(command, attempt+1);
   }
   const data = await res.json();
   if(data.error) throw new Error(data.error);
